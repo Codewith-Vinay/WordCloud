@@ -1,0 +1,33 @@
+import nltk
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+%matplotlib inline
+import numpy as np
+import pandas as pd
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+stop_words=set(stopwords.words('english'))
+print(stop_words)
+data="Artificial intelligence (AI) is intelligence-perceving, synthesizing, and inferring information-demonstrated by machines, as opposed to intelligence displayed by non-human animals and humans. Example tasks in which this is done include speech recognition on, computer vision, translation between (natural) languages, as well as other mappings of inputs."
+def data_preprocessing(data):
+    data=data.lower() #lowercase the words
+    data_tokens=word_tokenize(data) # tokenize the data
+    processed_words=[w for w in data_tokens if not w in stop_words] # remove the stop words present in the data
+    return " ".join(processed_words)
+data_preprocessed=data_preprocessing(data)
+plt.figure(figsize=(10,10),facecolor='None')
+wordcloud=WordCloud().generate(data_preprocessed)
+plt.imshow(wordcloud)
+plt.axis('off')
+plt.show
+import os
+os.chdir('D:\development\wc')
+wordcloud.to_file("wc1.png")
+from PIL import Image
+mask=np.array(Image.open('brain.jpg'))
+maskwordcloud=WordCloud(background_color='white',mask=mask)
+maskwordcloud.generate(data_preprocessed)
+plt.figure(figsize=(6,6))
+plt.imshow(maskwordcloud)
+plt.axis('off')
+plt.show()
